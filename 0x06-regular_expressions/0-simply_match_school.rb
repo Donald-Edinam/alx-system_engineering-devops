@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
+# This script accepts one argument and passes it to a regular expression,
+# matching method
+# The regular expression must match School
 
-input = ARGV[0]
-matches = input.scan(/School/)
-output = matches.empty? ? "" : matches.join + "$"
-puts output
+puts ARGV[0].scan(/School/).join
