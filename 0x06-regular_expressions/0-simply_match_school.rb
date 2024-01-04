@@ -1,2 +1,6 @@
 #!/usr/bin/env ruby
-puts ARGV[0].scan(/School/).join
+
+input = ARGV[0]
+matches = input.scan(/School/)
+output = matches.empty? ? "" : matches.join + "$"
+puts output
