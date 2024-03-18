@@ -17,8 +17,8 @@ frontend  Donald-Edinam_frontend
         default_backend Donald-Edinam_backend
 backend Donald-Edinam_backend
         balance roundrobin
-        server 176572-web-01 54.165.168.252:80 check
-        server 176572-web-02 34.237.91.136:80 check
+        server 193738-web-01 54.197.125.145:80 check
+        server 193738-web-02 100.26.49.233:80 check
 "
 echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
 
