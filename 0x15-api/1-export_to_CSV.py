@@ -1,31 +1,18 @@
 #!/usr/bin/python3
-"""Accessing a REST API for todo lists of employees."""
-
+"""Exports to-do list information for a given employee ID to CSV format."""
+import csv
 import requests
 import sys
 
-
 if __name__ == "__main__":
-    employee_id = sys.argv[1]
-    base_url = "https://jsonplaceholder.typicode.com/users"
-    endpoint = f"{base_url}/{employee_id}"
+    user_id = sys.argv[1]
+    url = "https://jsonplaceholder.typicode.com/"
+    user = requests.get(url + "users/{}".format(user_id)).json()
+    username = user.get("username")
+    todos = requests.get(url + "todos", params={"userId": user_id}).json()
 
-    response = requests.get(endpoint)
-    employee_name = response.json().get("name")
-
-    todo_url = f"{endpoint}/todos"
-    response = requests.get(todo_url)
-    tasks = response.json()
-    total_done = 0
-    done_tasks = []
-
-    for task in tasks:
-        if task.get("completed"):
-            done_tasks.append(task)
-            total_done += 1
-
-    print(f"Employee {employee_name} is done with tasks "
-          f"({total_done}/{len(tasks)}):")
-
-    for task in done_tasks:
-        print(f"\t{task['title']}")
+    with open("{}.csv".format(user_id), "w", newline="") as csvfile:
+        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        [writer.writerow(
+            [user_id, username, t.get("completed"), t.get("title")]
+         ) for t in todos]
